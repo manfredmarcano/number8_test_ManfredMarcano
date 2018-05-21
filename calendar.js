@@ -13,28 +13,45 @@ var months = [
 	{ name: "December", length: 31 }
 ];
 
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
 
 function createMonths (inputDate, daysNum) {
 	var resultMonths = "";
 	var validDays = 0;
 	var daysCounter = inputDate.getDate();
+	var validDaysInMonth = 0;
 
 	//daysNum = 1;
 	
-	var i=0;
+	var j=0;
 
 
 	//while (validDays < daysNum) {
 		// Hasta que no hayan más números por cubrir
-	while (i < 2) {
+	//while (j < 2) {
+	while (validDays < daysNum) {
+
+
+		//console.log(i);
 		//inputDate
+
+		/*
+		if(i==1){
+			console.log("Nueva fecha: ", inputDate);
+			return;
+		}
+		*/
 
 		var monthIndex = inputDate.getMonth();
 
 		monthIndex = monthIndex > 11 ? 0 : monthIndex;
 
 		resultMonths += "<tr>"+
-							"<td colspan='7'>"+ (i+1) + ": "+ months[ monthIndex ].name+"</td>"+
+							"<td colspan='7'>"+ (j+1) + ": "+ months[ monthIndex ].name+" "+inputDate.getFullYear()+"</td>"+
 						"</tr>";
 
 		// Obtener el primer día del mes / Get first day of month
@@ -65,6 +82,7 @@ function createMonths (inputDate, daysNum) {
 	    		resultMonths += "<td class='valid-day'>"+daysCounter+"</td>";
 	    		daysCounter++;
 	    		validDays++;
+	    		validDaysInMonth++;
 	    	} else {
 	    		resultMonths += "<td class='invalid-day'>-</td>";
 	    	}
@@ -73,13 +91,15 @@ function createMonths (inputDate, daysNum) {
 		//return resultMonths;
 
 
-		while (validDays < daysNum && daysCounter<=months[monthIndex].length) { // Queden días por escribir Y No se haya terminado el mes
+		// Queden días por escribir Y No se haya terminado el mes
+		while (validDays < daysNum && daysCounter<=months[monthIndex].length) { 
 		
 			for (var i=0; i<7; i++) {
-				if (validDays < daysNum) {
+				if (validDays < daysNum && daysCounter<=months[monthIndex].length) {
 		    		resultMonths += "<td class='valid-day'>"+daysCounter+"</td>";
 		    		daysCounter++;
 		    		validDays++;
+		    		validDaysInMonth++;
 		    	} else {
 		    		resultMonths += "<td class='invalid-day'>-</td>";
 		    	}
@@ -88,7 +108,9 @@ function createMonths (inputDate, daysNum) {
 			resultMonths += "</tr>";
 
 		}
-		return resultMonths;
+		//return resultMonths;
+
+
 
 
 		/*
@@ -106,11 +128,18 @@ function createMonths (inputDate, daysNum) {
 		*/
 
 
-
+		daysCounter = 1;
 		resultMonths += "<tr class='month-jump'></tr>";
 			
-		monthIndex++;
-		i++;
+		//monthIndex++;
+		inputDate = addDays(inputDate, validDaysInMonth); 
+		console.log("Nueva fecha: ", inputDate);
+		//return;
+		j++; // Borrar luego
+		console.log(i);
+
+
+		validDaysInMonth = 0;
 	}
 
 
@@ -118,12 +147,14 @@ function createMonths (inputDate, daysNum) {
 }
 
 
+
 function createCalendar () {
 	var daysNames = ["S", "M", "T", "W", "T", "F", "S"];
-	var inputDate = new Date("08-15-2008"); // Cambiar luego por usuario
+	//var inputDate = new Date("08-15-2008"); // Cambiar luego por usuario
 	//var inputDate = new Date("05-07-2018");
+	var inputDate = new Date("02-13-2018"); // Estudio de bisiestos
 
-	var daysNum = 17;
+	var daysNum = 90; // Probar con 17 que es cuando justo termina el mes 
 	
 
 	var resultCalendar = "<table border='1'>"+
