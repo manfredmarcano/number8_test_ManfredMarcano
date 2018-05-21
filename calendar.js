@@ -152,9 +152,10 @@ function createCalendar () {
 	var daysNames = ["S", "M", "T", "W", "T", "F", "S"];
 	//var inputDate = new Date("08-15-2008"); // Cambiar luego por usuario
 	//var inputDate = new Date("05-07-2018");
-	var inputDate = new Date("02-13-2018"); // Estudio de bisiestos
+	//var inputDate = new Date("02-13-2008"); // Estudio de bisiestos
+	var inputDate = new Date("05-21-2018");
 
-	var daysNum = 90; // Probar con 17 que es cuando justo termina el mes 
+	var daysNum = 800; // Probar con 17 que es cuando justo termina el mes 
 	
 
 	var resultCalendar = "<table border='1'>"+
