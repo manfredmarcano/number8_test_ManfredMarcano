@@ -1,0 +1,128 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Lato-Medium';
+  src: url('../fonts/Lato-Medium.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/Lato-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/Lato-Medium.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/Lato-Medium.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../fonts/Lato-Medium.ttf')  format('truetype') /* Safari, Android, iOS */
+}
+
+body {
+	padding-top: 50px;
+	text-align: center;
+    font-family: 'Lato-Medium';
+}
+
+#calendar {
+	text-align: center;
+}
+
+#calendar > table {
+	display: inline-block;
+}
+
+.month-jump {
+    height: 20px;
+}
+
+table th {
+    width: 30px;	
+}
+
+.invalid-day {
+	background-color: gray;
+}
+
+.input {
+	width: 300px;
+	display: inline-block;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+.form-group > .title {
+    width: 40%;
+    display: inline-block;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+}
+.form-group > .title > label {
+    font-size: 13px;
+    line-height: 34px;
+}
+
+    
+
+
+.form-group > .input {
+    width: 60%;
+    display: inline-block;
+}
+.form-group > .input > input {
+    width: 100%;
+    padding: 4px 5px;
+    line-height: 15px;
+    height: 34px;
+    font-size: 15px;
+
+    border: solid 2px #4d4d4d;
+    -webkit-border-radius: 4px;  
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    outline: none;
+
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.form-group > .input > input:focus {
+    border-color: #ea6c18;
+}
+
+.button {
+    color: #FFFFFF;
+    font-weight: 500;
+    padding: 4px 5px;
+    font-size: 15px;
+
+    background-color: #ea6c18;
+
+    border: solid 2px #ea6c18;
+    -webkit-border-radius: 4px;  
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    outline: none;
+
+    line-height: 15px;
+    height: 34px;
+
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.button:hover {
+    background-color: #FFFFFF;
+    color: #ea6c18;
+}
+
+.button:active {
+    background-color: #ea6c18;
+    color: #FFFFFF;
+}

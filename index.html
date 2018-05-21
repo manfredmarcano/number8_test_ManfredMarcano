@@ -3,10 +3,50 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Test 2 - Manfred Marcano - Number8</title>
-	<link rel="stylesheet" href="styles.css">
-	<script src="calendar.js"></script>
+	<link rel="stylesheet" href="css/styles.css">
+	<script src="js/calendar.js"></script>
 </head>
-<body onload="createCalendar()">
+<body> <!-- onload="createCalendar()" -->
+	
+	
+	<div class="input">
+		<div class="form-group">
+			<div class="title">
+				<label for="dateInput">Start Date:</label>
+			</div>
+			<div class="input">
+				<input type="date" id="dateInput">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="title">
+				<label for="daysNumberInput">Number of days:</label>
+			</div>
+			<div class="input">
+				<input type="number" id="daysNumberInput">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="title">
+				<label for="countryCodeInput">Country Code:</label>
+			</div>
+			<div class="input">
+				<input type="text" id="countryCodeInput">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<button class="button">Generate calendar</button>
+		</div>
+	</div>
+	
+
+
+	<!--
+	<input type="text">
+	-->
 	<div id="calendar"></div>
 </body>
 </html>
