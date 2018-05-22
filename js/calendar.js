@@ -278,7 +278,7 @@ function createCalendar () {
 	// Results legend
 	var resultCalendar = "<p>Results for:</p>"+
 							"<ul>"+
-								"<li><b>Start Date:</b> "+inputDate.getMonth()+"/"+inputDate.getDate()+"/"+inputDate.getFullYear()+"</li>"+
+								"<li><b>Start Date:</b> "+(inputDate.getMonth()+1)+"/"+inputDate.getDate()+"/"+inputDate.getFullYear()+"</li>"+
 								"<li><b>Number of days:</b> "+daysNumberInput+"</li>"+
 								"<li><b>Country Code:</b> "+countryCodeInput+"</li>"+
 							"</ul>";
