@@ -21,18 +21,53 @@ body {
 
 #calendar {
 	text-align: center;
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+   
+
+    /*
+    background-color: transparent;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+    */
 }
 
+#calendar.errors {
+    padding: 15px;
+    background-color: #ffc7c7;
+    -webkit-border-radius: 4px;  
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+/*
+#calendar.errors > p:last-child {
+    margin-bottom: 0;
+}
+*/
+
 #calendar > table {
-	display: inline-block;
+	/*display: inline-block;*/
+    width: 100%;
+    border-color: transparent;
+    table-layout: fixed;
+    border-right-width: 0;
+    border-left-width: 0;
 }
 
 .month-jump {
     height: 20px;
 }
 
-table th {
-    width: 30px;	
+table th,
+table td {
+    /*width: 30px;*/
+    height: 35px;
+    border: 0;	
 }
 
 .invalid-day {
@@ -115,6 +150,8 @@ table th {
 
     font-weight: bold;
     text-transform: uppercase;
+
+    cursor: pointer;
 }
 
 .button:hover {
@@ -125,4 +162,28 @@ table th {
 .button:active {
     background-color: #ea6c18;
     color: #FFFFFF;
+}
+
+.valid-day {
+    background-color: #c8df99;
+}
+.weekend {
+    background-color: yellow;
+}
+.invalid-day {
+    background-color: #cdcdcd;
+}
+
+.month-name {
+    background-color: #ecf6d2;
+}
+
+#calendar > ul {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 7px;
 }

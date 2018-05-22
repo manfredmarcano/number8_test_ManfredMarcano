@@ -47,11 +47,13 @@ function createMonths (inputDate, daysNum) {
 		*/
 
 		var monthIndex = inputDate.getMonth();
+		console.log(inputDate);
+		console.log(typeof inputDate);
 
 		monthIndex = monthIndex > 11 ? 0 : monthIndex;
 
 		resultMonths += "<tr>"+
-							"<td colspan='7'>"+ (j+1) + ": "+ months[ monthIndex ].name+" "+inputDate.getFullYear()+"</td>"+
+							"<td colspan='7' class='month-name'>"+ months[ monthIndex ].name+" "+inputDate.getFullYear()+"</td>"+
 						"</tr>";
 
 		// Obtener el primer día del mes / Get first day of month
@@ -77,9 +79,12 @@ function createMonths (inputDate, daysNum) {
 	    for (var i=0; i<7; i++) {
 
 	    	if (i<startingDay) {
-	    		resultMonths += "<td class='invalid-day'>-</td>";
+	    		resultMonths += "<td class='invalid-day'></td>";
 	    	} else if (validDays < daysNum) {
-	    		resultMonths += "<td class='valid-day'>"+daysCounter+"</td>";
+	    		var dateType = isWeekend( new Date(inputDate.getFullYear(), monthIndex, daysCounter) ) ? " weekend" : "";
+
+	    		resultMonths += "<td class='valid-day"+dateType+"'>"+daysCounter+"</td>";
+	    		
 	    		daysCounter++;
 	    		validDays++;
 	    		validDaysInMonth++;
@@ -96,12 +101,13 @@ function createMonths (inputDate, daysNum) {
 		
 			for (var i=0; i<7; i++) {
 				if (validDays < daysNum && daysCounter<=months[monthIndex].length) {
-		    		resultMonths += "<td class='valid-day'>"+daysCounter+"</td>";
+					var dateType = isWeekend( new Date(inputDate.getFullYear(), monthIndex, daysCounter) ) ? " weekend" : "";
+		    		resultMonths += "<td class='valid-day "+dateType+"'>"+daysCounter+"</td>";
 		    		daysCounter++;
 		    		validDays++;
 		    		validDaysInMonth++;
 		    	} else {
-		    		resultMonths += "<td class='invalid-day'>-</td>";
+		    		resultMonths += "<td class='invalid-day'></td>";
 		    	}
 				//resultMonths += "<td class='invalid-day'>X</td>";
 			}
@@ -146,19 +152,115 @@ function createMonths (inputDate, daysNum) {
 	return resultMonths;
 }
 
+function addErrorClass() {
+    var element, name, arr;
+    element = document.getElementById("calendar");
+    name = "errors";
+    arr = element.className.split(" ");
+    if (arr.indexOf(name) == -1) {
+        element.className += " " + name;
+    }
+}
 
+function removeErrorClass() {
+    var element = document.getElementById("calendar");
+    element.className = element.className.replace(/\berrors\b/g, "");
+}
+
+function isWeekend (date) {
+	var day = date.getDay();
+	return( (day == 6)||(day == 0) );
+}
+
+function checkErrorMessages (errors) {
+
+	//console.log("-->", Boolean(errors.length));
+	var resultWrapper = document.getElementById("calendar");
+	resultWrapper.innerHTML = "";
+
+	// Errors exists
+	if (Boolean(errors.length)) {
+		addErrorClass();
+		var message = "";
+		for (var i=0; i<errors.length; i++) {
+			message += "<p>"+errors[i]+"</p>";
+		}
+		resultWrapper.innerHTML = message;
+
+		return true;
+	} else {
+		removeErrorClass();
+		return false;
+	}
+	
+}
 
 function createCalendar () {
+
+	var inputDate = document.getElementById("dateInput").value;
+	var daysNumberInput = document.getElementById("daysNumberInput").value;
+	var countryCodeInput = document.getElementById("countryCodeInput").value;
+	var errorMessages = [];
+
+	if ( !Boolean(inputDate.trim()) ) {
+		errorMessages.push("Date missing");
+	} 
+	if ( !Boolean(daysNumberInput.trim()) ) {
+		errorMessages.push("Number of days missing");
+	} 
+	if ( !Boolean(countryCodeInput.trim()) ) {
+		errorMessages.push("Country code missing");
+	}
+
+	console.log(errorMessages);
+	//return
+
+	// Block creating when exists errors
+	if ( checkErrorMessages(errorMessages) ) return;
+	// TRUE: Errores
+	// FALSE: Valido
+
+
+	//alert(inputDate+"-"+daysNumberInput+"-"+countryCodeInput);
+	//return;
+
+	console.log("1: ", inputDate);
+	//var  = new Date();
+	//var n = d.getDate();
+	//var timezone = new Date(inputDate).getTimezoneOffset() / -60;
+
+
+	//var str = "How are you doing today?";
+	//var res = inputDate.split("-");
+
+	
+	var splitDate = inputDate.split("-");
+	//var fixedDate = splitDate[1]+"-"+splitDate[2]+"-"+splitDate[0];
+
+
+	console.log(splitDate[1]+"-"+splitDate[2]+"-"+splitDate[0]);
+	//console.log( new Date(inputDate).getTimezoneOffset() );
+
+	//console.log("2: ", new Date(getDate()+"-21-2018") );
+	//return;
+
+
 	var daysNames = ["S", "M", "T", "W", "T", "F", "S"];
 	//var inputDate = new Date("08-15-2008"); // Cambiar luego por usuario
 	//var inputDate = new Date("05-07-2018");
 	//var inputDate = new Date("02-13-2008"); // Estudio de bisiestos
-	var inputDate = new Date("05-21-2018");
+	//var inputDate = new Date("05-21-2018");
 
-	var daysNum = 800; // Probar con 17 que es cuando justo termina el mes 
+	var daysNum = daysNumberInput; // Probar con 17 que es cuando justo termina el mes 
 	
+	var resultCalendar = "<p>Results for:</p>"+
+							"<ul>"+
+								"<li><b>Start Date:</b> "+inputDate+"</li>"+
+								"<li><b>Number of days:</b> "+daysNumberInput+"</li>"+
+								"<li><b>Country Code:</b> "+countryCodeInput+"</li>"+
+							"</ul>";
 
-	var resultCalendar = "<table border='1'>"+
+	resultCalendar += "<table border='1'>"+
 		"<tr>"+
 			"<th>"+daysNames[0]+"</th>"+
 			"<th>"+daysNames[1]+"</th>"+
@@ -168,7 +270,7 @@ function createCalendar () {
 			"<th>"+daysNames[5]+"</th>"+
 			"<th>"+daysNames[6]+"</th>"+
 		"</tr>"+
-		createMonths(inputDate, daysNum)+
+		createMonths(new Date(inputDate), daysNum)+
 	"</table>";
 
 	//console.log(resultCalendar);
