@@ -1,107 +1,94 @@
-var months = [
-	{ name: "January", length: 31 },
-	{ name: "February", length: 28 },
-	{ name: "March", length: 31 },
-	{ name: "April", length: 30 },
-	{ name: "May", length: 31 },
-	{ name: "June", length: 30 },
-	{ name: "July", length: 31 },
-	{ name: "August", length: 31 },
-	{ name: "September", length: 30 },
-	{ name: "October", length: 31 },
-	{ name: "November", length: 30 },
-	{ name: "December", length: 31 }
-];
-
-function addDays(date, days) {
-  var result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-}
-
 function createMonths (inputDate, daysNum) {
+
+	// Length of months, february may change
+	var months = [
+		{ name: "January", length: 31 },
+		{ name: "February", length: 28 },
+		{ name: "March", length: 31 },
+		{ name: "April", length: 30 },
+		{ name: "May", length: 31 },
+		{ name: "June", length: 30 },
+		{ name: "July", length: 31 },
+		{ name: "August", length: 31 },
+		{ name: "September", length: 30 },
+		{ name: "October", length: 31 },
+		{ name: "November", length: 30 },
+		{ name: "December", length: 31 }
+	]; 
+
+	// Result calendar
 	var resultMonths = "";
+	
+	// Valid days found counter (weekdays and weekends)
 	var validDays = 0;
+
+	// Date to print
 	var daysCounter = inputDate.getDate();
+	
+	// Valid days found in current month, used to update input date for next month
 	var validDaysInMonth = 0;
 
-	//daysNum = 1;
-	
-	var j=0;
-
-
-	//while (validDays < daysNum) {
-		// Hasta que no hayan más números por cubrir
-	//while (j < 2) {
+	// Until there are not more days to print
 	while (validDays < daysNum) {
 
-
-		//console.log(i);
-		//inputDate
-
-		/*
-		if(i==1){
-			console.log("Nueva fecha: ", inputDate);
-			return;
-		}
-		*/
-
 		var monthIndex = inputDate.getMonth();
-		console.log(inputDate);
-		console.log(typeof inputDate);
+		monthIndex = monthIndex > 11 ? 0 : monthIndex; // To fix 0-11
 
-		monthIndex = monthIndex > 11 ? 0 : monthIndex;
-
+		// Build month header
 		resultMonths += "<tr>"+
 							"<td colspan='7' class='month-name'>"+ months[ monthIndex ].name+" "+inputDate.getFullYear()+"</td>"+
 						"</tr>";
 
-		// Obtener el primer día del mes / Get first day of month
+		// Get first day of current month
 	    var firstDay = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate());
 	    var startingDay = firstDay.getDay();				
-	    console.log("Month starting day: ", startingDay);
 
-	    // find number of days in month
-	    //var monthLength = cal_days_in_month[this.month];
-
-	    // To compensate for leap year
-	    if (monthIndex == 1) { // 1 = February
+	    // February duration arrangement if leapfrogged
+	    if (monthIndex == 1) { // 0: January, 1: February
 	        if ((inputDate.getFullYear() % 4 == 0 && inputDate.getFullYear() % 100 != 0) || inputDate.getFullYear() % 400 == 0) {
+	            // Leapfrogged
 	            months[1].length = 29;
 	        } else {
+	        	// Not leapfrogged
 	        	months[1].length = 28;
 	        }
 	    }
 
 
-	    // INICIO DE MES
+	    // Build days before the first day of the month (invalid days)
 	    resultMonths += "<tr>";
 	    for (var i=0; i<7; i++) {
 
+	    	// Where to start to print valid days
 	    	if (i<startingDay) {
 	    		resultMonths += "<td class='invalid-day'></td>";
 	    	} else if (validDays < daysNum) {
+
+	    		// Class for weekends
 	    		var dateType = isWeekend( new Date(inputDate.getFullYear(), monthIndex, daysCounter) ) ? " weekend" : "";
+	    		dateType += isHoliday(daysCounter, monthIndex+1) ? " holiday" : "";
 
 	    		resultMonths += "<td class='valid-day"+dateType+"'>"+daysCounter+"</td>";
-	    		
 	    		daysCounter++;
 	    		validDays++;
 	    		validDaysInMonth++;
-	    	} else {
-	    		resultMonths += "<td class='invalid-day'>-</td>";
+	    	} else { // If first week in current month is the last week and it has invalid days
+	    		resultMonths += "<td class='invalid-day'></td>";
 	    	}
 	    }
 		resultMonths += "</tr>";
-		//return resultMonths;
 
-
-		// Queden días por escribir Y No se haya terminado el mes
-		while (validDays < daysNum && daysCounter<=months[monthIndex].length) { 
+		// For the remaining days, while remains days to print and length of month isn't over
+		while (validDays < daysNum && daysCounter<=months[monthIndex].length) {
+			resultMonths += "<tr>";
 		
 			for (var i=0; i<7; i++) {
 				if (validDays < daysNum && daysCounter<=months[monthIndex].length) {
+
+					// Class for weekends
 					var dateType = isWeekend( new Date(inputDate.getFullYear(), monthIndex, daysCounter) ) ? " weekend" : "";
+		    		dateType += isHoliday(daysCounter, monthIndex+1) ? " holiday" : "";
+
 		    		resultMonths += "<td class='valid-day "+dateType+"'>"+daysCounter+"</td>";
 		    		daysCounter++;
 		    		validDays++;
@@ -109,47 +96,34 @@ function createMonths (inputDate, daysNum) {
 		    	} else {
 		    		resultMonths += "<td class='invalid-day'></td>";
 		    	}
-				//resultMonths += "<td class='invalid-day'>X</td>";
 			}
 			resultMonths += "</tr>";
-
 		}
-		//return resultMonths;
 
-
-
-
-		/*
-		var k = 0;
-		while (k < 4) { // Mientras existan dias de ese mes por poner
-			resultMonths += "<tr>";
-
-			for (var j=0; j<7; j++) {
-				resultMonths += "<td class='invalid-day'>X</td>";
-			}
-
-			resultMonths += "</tr>";
-			k++;
-		}
-		*/
-
-
-		daysCounter = 1;
-		resultMonths += "<tr class='month-jump'></tr>";
-			
-		//monthIndex++;
-		inputDate = addDays(inputDate, validDaysInMonth); 
-		console.log("Nueva fecha: ", inputDate);
-		//return;
-		j++; // Borrar luego
-		console.log(i);
-
-
+		daysCounter = 1; // "1" For printing it on next month
+		resultMonths += "<tr class='month-jump'></tr>"; // Months margin			
+		inputDate = addDays(inputDate, validDaysInMonth); // Update current date for next month 
 		validDaysInMonth = 0;
 	}
 
-
 	return resultMonths;
+}
+
+function convertUTCDateToLocalDate(date) {
+    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+
+    var offset = date.getTimezoneOffset() / 60;
+    var hours = date.getHours();
+
+    newDate.setHours(hours - offset);
+
+    return newDate;   
+}
+
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
 }
 
 function addErrorClass() {
@@ -172,16 +146,82 @@ function isWeekend (date) {
 	return( (day == 6)||(day == 0) );
 }
 
+function isHoliday (date, month) {
+	var usaHolidays = [
+		{
+			name: "New Year’s Day",
+			date: "1",
+			month: "1"
+		},
+		{
+			name: "Birthday of Martin Luther King, Jr.",
+			date: "15",
+			month: "1"
+		},
+		{
+			name: "Washington’s Birthday",
+			date: "19",
+			month: "2"
+		},
+		{
+			name: "Memorial Day",
+			date: "28",
+			month: "5"
+		},
+		{
+			name: "Independence Day",
+			date: "4",
+			month: "7"
+		},
+		{
+			name: "Labor Day",
+			date: "3",
+			month: "9"
+		},
+		{
+			name: "Columbus Day",
+			date: "8",
+			month: "10"
+		},
+		{
+			name: "Veterans Day",
+			date: "12",
+			month: "11"
+		},
+		{
+			name: "Thanksgiving Day",
+			date: "22",
+			month: "11"
+		},
+		{
+			name: "Christmas Day",
+			date: "25",
+			month: "12"
+		},
+	];
+
+	for (var i=0; i<usaHolidays.length; i++) {
+		if (date == usaHolidays[i].date && month == usaHolidays[i].month)
+			return true;
+		// If holidays are sorted by month from highest to lowest
+		if (month < usaHolidays[i].month)
+			return false;		
+	}
+
+	return false;	
+}
+
 function checkErrorMessages (errors) {
 
-	//console.log("-->", Boolean(errors.length));
 	var resultWrapper = document.getElementById("calendar");
 	resultWrapper.innerHTML = "";
 
-	// Errors exists
+	// If errors exist in array then this displays the errors in the results wrapper
 	if (Boolean(errors.length)) {
-		addErrorClass();
+		addErrorClass(); // For errors styling
+		
 		var message = "";
+		// Show errors
 		for (var i=0; i<errors.length; i++) {
 			message += "<p>"+errors[i]+"</p>";
 		}
@@ -189,77 +229,61 @@ function checkErrorMessages (errors) {
 
 		return true;
 	} else {
-		removeErrorClass();
+		removeErrorClass(); // For errors styling
 		return false;
 	}
 	
+	/* Returns:
+	 true: with errors
+	 false: valid inputs
+	*/
 }
 
 function createCalendar () {
 
-	var inputDate = document.getElementById("dateInput").value;
-	var daysNumberInput = document.getElementById("daysNumberInput").value;
-	var countryCodeInput = document.getElementById("countryCodeInput").value;
+	// Getting inputs data
+	var inputDate = document.getElementById("dateInput").value.trim();
+	var daysNumberInput = document.getElementById("daysNumberInput").value.trim();
+	var countryCodeInput = document.getElementById("countryCodeInput").value.trim();
+
+	// For timezone problems with local time
+	inputDate = convertUTCDateToLocalDate(new Date(inputDate));
+	
+	// For errors handling
 	var errorMessages = [];
 
-	if ( !Boolean(inputDate.trim()) ) {
+	// Validate empty date
+	if ( !Boolean(inputDate) ) {
 		errorMessages.push("Date missing");
 	} 
-	if ( !Boolean(daysNumberInput.trim()) ) {
+
+	// Validate empty number of days and valid number
+	if ( !Boolean(daysNumberInput) ) {
 		errorMessages.push("Number of days missing");
-	} 
-	if ( !Boolean(countryCodeInput.trim()) ) {
+	} else if( isNaN(daysNumberInput) ) {
+		errorMessages.push("Number of days must be a valid number");
+	}
+
+	// Validate empty country code 
+	if ( !Boolean(countryCodeInput) ) {
 		errorMessages.push("Country code missing");
 	}
 
-	console.log(errorMessages);
-	//return
-
-	// Block creating when exists errors
+	// Cancel calendar creation when there are errors
 	if ( checkErrorMessages(errorMessages) ) return;
-	// TRUE: Errores
-	// FALSE: Valido
 
-
-	//alert(inputDate+"-"+daysNumberInput+"-"+countryCodeInput);
-	//return;
-
-	console.log("1: ", inputDate);
-	//var  = new Date();
-	//var n = d.getDate();
-	//var timezone = new Date(inputDate).getTimezoneOffset() / -60;
-
-
-	//var str = "How are you doing today?";
-	//var res = inputDate.split("-");
-
-	
-	var splitDate = inputDate.split("-");
-	//var fixedDate = splitDate[1]+"-"+splitDate[2]+"-"+splitDate[0];
-
-
-	console.log(splitDate[1]+"-"+splitDate[2]+"-"+splitDate[0]);
-	//console.log( new Date(inputDate).getTimezoneOffset() );
-
-	//console.log("2: ", new Date(getDate()+"-21-2018") );
-	//return;
-
-
+	// Days initial names
 	var daysNames = ["S", "M", "T", "W", "T", "F", "S"];
-	//var inputDate = new Date("08-15-2008"); // Cambiar luego por usuario
-	//var inputDate = new Date("05-07-2018");
-	//var inputDate = new Date("02-13-2008"); // Estudio de bisiestos
-	//var inputDate = new Date("05-21-2018");
 
-	var daysNum = daysNumberInput; // Probar con 17 que es cuando justo termina el mes 
-	
+	// Results legend
 	var resultCalendar = "<p>Results for:</p>"+
 							"<ul>"+
-								"<li><b>Start Date:</b> "+inputDate+"</li>"+
+								"<li><b>Start Date:</b> "+inputDate.getMonth()+"/"+inputDate.getDate()+"/"+inputDate.getFullYear()+"</li>"+
 								"<li><b>Number of days:</b> "+daysNumberInput+"</li>"+
 								"<li><b>Country Code:</b> "+countryCodeInput+"</li>"+
 							"</ul>";
 
+	// Contruction of days names and months					
 	resultCalendar += "<table border='1'>"+
 		"<tr>"+
 			"<th>"+daysNames[0]+"</th>"+
@@ -270,14 +294,10 @@ function createCalendar () {
 			"<th>"+daysNames[5]+"</th>"+
 			"<th>"+daysNames[6]+"</th>"+
 		"</tr>"+
-		createMonths(new Date(inputDate), daysNum)+
+		createMonths(new Date(inputDate), daysNumberInput)+
 	"</table>";
 
-	//console.log(resultCalendar);
+	// Result
 	document.getElementById("calendar").innerHTML = resultCalendar;
-
-
-	//alert(inputDate.getMonth());
-
-
 }
+
